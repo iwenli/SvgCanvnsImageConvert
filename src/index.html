@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Svg Convert To Image</title>
+  <script type="text/javascript" src="https://unpkg.com/canvg@3.0.4/lib/umd.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/jquery@3.5.0/dist/jquery.js"></script>
+  <style>
+    div {
+      border-bottom: 1px solid #eee;
+      margin-top: 2em;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <button type="button" onclick="changeColor()">变更颜色&大小</button>
+  </div>
+  <div>
+    <sapn>SVG</sapn>
+    <div id="svg-container">
+    </div>
+  </div>
+  <div>
+    <sapn>Canvas</sapn>
+    <canvas></canvas>
+  </div>
+  <div>
+    <sapn>Image</sapn>
+    <img src="" alt="">
+  </div>
+  <script type="text/javascript">
+
+    const canvas = document.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    let svg = document.querySelector('svg');
+    const img = document.querySelector('img');
+
+    $('#svg-container').load('cloud1.svg', function (res) {
+      console.log('加载svg文件', res);
+      changeColor();
+    });
+    function changeColor() {
+      svg = document.querySelector('svg');
+
+      // change color
+      svg.children[0].children[0].setAttribute('fill', color16());
+      // change size
+      const size = Math.random() * 400 + 'px';
+      svg.setAttribute('width', size)
+      svg.setAttribute('height', size)
+
+      v = canvg.Canvg.fromString(ctx, svg.outerHTML);
+
+      // Start SVG rendering with animations and mouse handling.
+      v.start();
+      // v.render();
+      // canvg to image
+      const pngUrl = canvas.toDataURL();
+      img.src = pngUrl;
+    }
+
+    function color16() {
+      //十六进制颜色随机
+      var r = Math.floor(Math.random() * 256);
+      var g = Math.floor(Math.random() * 256);
+      var b = Math.floor(Math.random() * 256);
+      var color = '#' + r.toString(16) + g.toString(16) + b.toString(16);
+      return color;
+    }
+  </script>
+</body>
+
+</html>
